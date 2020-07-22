@@ -1,6 +1,7 @@
 from flask import render_template, request, redirect, url_for,abort
+from flask_login import login_required, current_user
 from . import main
-from .forms import PostPitch, CategoryForm. CommentForm
+from .forms import PostPitch, CategoryForm, CommentForm
 from  ..import db
 
 from ..models import Pitch,User,Comments,Category
@@ -44,14 +45,12 @@ def pitch_page(id):
         return redirect(url_for('.category',id= category_id.id ))
     return render_template('pitch.html',category = category,pitch_form=form)
 
+#Route to categories Pitchlist
+@main.route('/categories/<int:id>')
+def category(id):
+    category = PitchCategory.query.get(id)
+    if category is None:
+        abort(404)
 
-    
-
-# @main.route('/user/<uname>')
-# def profile(uname):
-#     user = User.query.filter_by(username = uname).first()
-
-#     if user is None:
-#         abort(404)
-
-#     return render_template("profile/profile.html", user = user)
+    pitches=Pitch.get_pitches(id)
+    return render_template('category.html', pitches=pitches, category=category)
