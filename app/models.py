@@ -67,7 +67,7 @@ class Pitch(db.Model):
     category_id = db.Column(db.Integer, db.ForeignKey("categories.id"))
     user_id = db.Column(db.Integer,db.ForeignKey("users.id"))
     comment = db.relationship("Comments", backref="pitches", lazy = "dynamic")
-    vote = db.relationship("Votes", backref="pitches", lazy = "dynamic")
+    #vote = db.relationship("Votes", backref="pitches", lazy = "dynamic")
 
     def save_pitches(self):
         '''
@@ -84,3 +84,29 @@ class Pitch(db.Model):
         pitches = Pitch.query.filter_by(category_id =id).all()
         return pitches
 
+class Comments(db.Model):
+    """
+    Class to create comments objects
+    """
+
+    __tablename__ = 'comments'
+
+    # add columns
+    id = db.Column(db. Integer, primary_key=True)
+    comment= db.Column(db.String(255))
+    time_posted = db.Column(db.DateTime, default=datetime.utcnow)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    pitches_id = db.Column(db.Integer, db.ForeignKey("pitches.id"))
+
+
+    def save_comments(self):
+        """
+        Save the Comments/comments per pitch
+        """
+        db.session.add(self)
+        db.session.commit()
+
+    @classmethod
+    def get_comments(self, id):
+        comment = Comments.query.order_by(Comments.time_posted.desc()).filter_by(pitches_id=id).all()
+        return comment
