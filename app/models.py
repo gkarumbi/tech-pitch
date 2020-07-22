@@ -2,6 +2,8 @@ from . import db
 from werkzeug.security import generate_password_hash,check_password_hash
 from flask_login import UserMixin
 from . import login_manager
+from datetime import datetime
+from flask_sqlalchemy import SQLAlchemy
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -15,7 +17,7 @@ class User(UserMixin,db.Model):
     password_hash = db.Column(db.String(255))
     bio = db.Column(db.String(255))
     pitches = db.relationship("Pitch", backref="user", lazy = "dynamic")
-    comment = db.relationship("Comments", backref="user", lazy = "dynami
+    comment = db.relationship("Comments", backref="user", lazy = "dynamic")
 
     @property
     def password(self):
@@ -48,7 +50,7 @@ class Category(db.Model):
 
     @classmethod
     def get_categories(cls):
-        categories = PitchCategory.query.all()
+        categories = Category.query.all()
         return categories
 
 
@@ -63,7 +65,7 @@ class Pitch(db.Model):
     __tablename__= 'pitches'
 
     id = db.Column(db.Integer,primary_key = True)
-    content = db.Column(db.String())
+    pitch = db.Column(db.String())
     category_id = db.Column(db.Integer, db.ForeignKey("categories.id"))
     user_id = db.Column(db.Integer,db.ForeignKey("users.id"))
     comment = db.relationship("Comments", backref="pitches", lazy = "dynamic")

@@ -26,13 +26,13 @@
                         <div class="col-md-6">
                             <h4>
                                 <span>
-                                    <a href="{{url_for('.view-pitch',id=pitch.id)}}">Read Comments</a>
+                                    <a href="{{url_for('.view_pitch',id=pitch.id)}}">Read Comments</a>
                                 </span>
                             </h4>
                             <!-- <small class="text-muted">PostedBy: {{pitch.owner}}</small> -->
                         </div>
                         <div class="col-md-6">
-                            <a href="{{url_for('.new-comment',id=pitch.id)}}">
+                            <a href="{{url_for('.post_comment',id=pitch.id)}}">
                                 <h4>Comment</h4>
                             </a>
                         </div>

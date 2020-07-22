@@ -39,16 +39,16 @@ def pitch_page(id):
     if form.validate_on_submit():
         
         pitch =form.pitch.data
-        new_pitch = Pitch(pitch=pitch,category_id=category.id,user_id = user.id)
+        new_pitch = Pitch(pitch=pitch,category_id=category.id,user_id = current_user.id)
         print(new_pitch)
         new_pitch.save_pitches()
-        return redirect(url_for('.category',id= category_id.id ))
+        return redirect(url_for('.category',id= category.id ))
     return render_template('pitch.html',category = category,pitch_form=form)
 
 #Route to categories Pitchlist
 @main.route('/categories/<int:id>')
 def category(id):
-    category = PitchCategory.query.get(id)
+    category = Category.query.get(id)
     if category is None:
         abort(404)
 
@@ -113,6 +113,6 @@ def post_comment(id):
         comment = form.comment.data
         new_comment = Comments(comment = comment, user_id = current_user.id, pitches_id = pitches.id)
         new_comment.save_comments()
-        return redirect(url_for('.view_pitch', id = pitches.id))
+        return redirect(url_for('.view-pitch', id = pitches.id))
 
     return render_template('new-comment.html', comment_form = form, title = title)
