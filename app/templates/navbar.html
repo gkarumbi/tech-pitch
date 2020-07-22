@@ -1,31 +1,17 @@
 <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
     <!-- Navbar content -->
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
+
         <ul class="navbar-nav nav">
             <li class="nav-item active" style="list-style: none;">
                 <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
             </li>
+            {% for category in categories %}
             <li class="nav-item active" style="list-style: none;">
-                <a class="nav-link" href="#">Agritech <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="{{url_for('.category',id=category.id)}}">{{category.name}} <span class="sr-only">(current)</span></a>
             </li>
-            <li class="nav-item active" style="list-style: none;">
-                <a class="nav-link" href="#">Fintech <span class="sr-only">(current)</span></a>
-            </li>
-           
-            <li class="nav-item active" style="list-style: none;">
-                <a class="nav-link" href="#">Robotics <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item active" style="list-style: none;">
-                <a class="nav-link" href="#">A.I & Machine Learning <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item active" style="list-style: none;">
-                <a class="nav-link" href="#">Cloud Computing <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item active" style="list-style: none;">
-                <a class="nav-link" href="#">Blockchain <span class="sr-only">(current)</span></a>
-            </li>
-           
-           
+               
+            {% endfor %}
            
            
            
@@ -34,7 +20,7 @@
         </ul>
         <ul class="nav navbar-nav navbar-right">
             {% if current_user.is_authenticated%}
-            <li><a href="{{url_for('main.profile',uname=current_user.username)}}">Profile</a></li>
+            <li><a href="/">Profile: {{current_user.username.capitalize()}}</a></li>
             <li><a href="{{url_for('auth.logout')}}"><i class="fa fa-user"></i>Sign out</a></li>
             {% else %}
             <li><a href="{{url_for('auth.login')}}"><i class="fa fa-sign-in-alt"></i> Login</a></li>
