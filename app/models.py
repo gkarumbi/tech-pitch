@@ -14,6 +14,8 @@ class User(UserMixin,db.Model):
     email = db.Column(db.String(255),unique = True,index = True)
     password_hash = db.Column(db.String(255))
     bio = db.Column(db.String(255))
+    pitches = db.relationship("Pitch", backref="user", lazy = "dynamic")
+    comment = db.relationship("Comments", backref="user", lazy = "dynami
 
     @property
     def password(self):
@@ -31,14 +33,25 @@ class User(UserMixin,db.Model):
     def __repr__(self):
         return f'User {self.username}'
 
-class Category:
+class Category(db.Model):
+    __tablename__= 'categories'
 
-    agritech = 'Agritech'
-    fintech = 'Fintech'
-    cloud = "Cloud Computing"
-    robotics = 'Robotics'
-    aiml = 'A.I & Machine Learning'
-    block = 'Block Chain'
+    #Columns
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(255))
+    description = db.Column(db.String(255))
+
+    #save category
+    def save_category(self):
+        db.session.add(self)
+        db.session.commit()
+
+    @classmethod
+    def get_categories(cls):
+        categories = PitchCategory.query.all()
+        return categories
+
+
 
 
 
