@@ -55,23 +55,32 @@ class Category(db.Model):
 
 
 
-class Pitch:
+class Pitch(db.Model):
     '''
     Class to create our pitch objects
     '''
 
-    all_pitches = []
+    __tablename__= 'pitches'
 
-    def __init__(self, category, title,idea,owner):
-        self.category = category
-        self.title = title
-        self.idea = idea
-        self.owner = owner
+    id = db.Column(db.Integer,primary_key = True)
+    content = db.Column(db.String())
+    category_id = db.Column(db.Integer, db.ForeignKey("categories.id"))
+    user_id = db.Column(db.Integer,db.ForeignKey("users.id"))
+    comment = db.relationship("Comments", backref="pitches", lazy = "dynamic")
+    vote = db.relationship("Votes", backref="pitches", lazy = "dynamic")
 
     def save_pitches(self):
-        Pitch.all_pitches.append(self)
+        '''
+        Saving pitches
+        '''
+        db.session.add(self)
+        db.session.commit()
 
     @classmethod
     def clear_pitches(cls):
         Pitch.all_pitches.clear()
+
+    def get_pitches(id):
+        pitches = Pitch.query.filter_by(category_id =id).all()
+        return pitches
 
